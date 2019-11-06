@@ -1,0 +1,70 @@
+local meta = debug.getmetatable(game)
+local newindex = meta.__newindex
+local namecall = meta.__namecall
+setreadonly(meta,false)
+
+meta.__newindex = newcclosure(function(self,key,value)
+    if checkcaller() then 
+        return newindex(self,key,value)
+    end
+    if self and self:IsA("Humanoid") then
+        game.StarterGui:SetCore("ResetButtonCallback",true)
+        if key == "WalkSpeed" then 
+            return
+        end
+        if key == "JumpPower" then 
+            return
+        end
+        if key == "HipHeight" then 
+            return
+        end
+        if key == "Health" then 
+            return
+        end
+    end
+    if key == "CFrame" and self.Name == "Torso" or self.Name == "HumanoidRootPart" then 
+        return
+    end
+    return newindex(self,key,value)
+end)
+
+meta.__namecall = newcclosure(function(self,...)
+    local args = {...}
+    local t = getnamecallmethod()
+    if t == "BreakJoints" then 
+        return wait(9e9)
+    end
+    if t == "Kick" then
+        return wait(9e9)
+    end
+    if t == "FireServer" then 
+        if self.Name == "lIII" or self.Parent.Name == "ReplicatedStorage" then 
+            return wait(9e9)
+        end
+        if args[#args] == "hey" then 
+            return wait(9e9)
+        end
+    end
+    return namecall(self,...)
+end)
+wait()
+KeyHeld = false
+	 
+	function onKeyPress(inputObject,gameProcessed)
+	    if inputObject.KeyCode == Enum.KeyCode.LeftShift then
+	        KeyHeld = true
+	        while KeyHeld do
+	            game.Workspace[game.Players.LocalPlayer.Name].Humanoid.WalkSpeed = 150
+	            wait()
+		  end
+	 end
+end 
+function onKeyRelease(inputObject,gameProcessed)
+	   if inputObject.KeyCode == Enum.KeyCode.LeftShift then
+       KeyHeld = false
+	   game.Workspace[game.Players.LocalPlayer.Name].Humanoid.WalkSpeed = 16
+    end
+end 
+game:GetService("UserInputService").InputBegan:connect(onKeyPress)
+game:GetService("UserInputService").InputEnded:connect(onKeyRelease)
+wait()
